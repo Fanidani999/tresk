@@ -59,7 +59,7 @@
 #
 # finnd_compile_registr =  soup.find_all(text=re.compile("([Оо]дежда)"))
 # print(finnd_compile_registr)
-
+1-урок
 
 
 
@@ -416,59 +416,3 @@
 #
 #     print(f"ОСТАЛОСЬ ИНТЕРАЦИЙ: {iteration_count}")
 #     sleep(randint(0,1)) #2-УРОК
-
-
-
-
-# import os
-# import requests
-# import img2pdf
-#
-#
-# def get_data():
-#     headers = {
-#         "Accept": "image/afiv,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
-#         "User-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
-#
-#     }
-#
-#     img_list = []
-#     for y in range(1,5):
-#         url = f"https://www.recordpower.co.uk/flip/Winter2020/files/mobile/{y}.jpg"
-#         req = requests.get(url=url, headers=headers)
-#         responce = req.content
-#
-#
-#         with open(f"media9/{y}.jpg", "wb") as file:
-#             file.write(responce)
-#             img_list.append(f"media9/{y}.jpg")
-#             print(f"Downloaded {y} of 5")
-#
-#     print("#" * 20)
-#     print(img_list)
-#
-#     with open("result.pdf", "wb") as f:
-#         f.write(img2pdf.convert(img_list))
-#
-#     print("PDF file created successfully!")
-#
-# def write_to_pdf():
-#     # print(os.listdir("media9"))
-#     img_list = [f"media9/{y}.jpg" for y in range(1,5)]
-#
-#     with open("result.pdf", "wb") as f:
-#         f.write(img2pdf.convert(img_list))
-#
-#
-#     print("PDF file created successfully!")
-#
-#
-# def main():
-#     # get_data()
-#     write_to_pdf()
-#
-#
-# if _name_ == '_main_':
-#     main()
-# #5-урок
-
