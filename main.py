@@ -160,174 +160,237 @@
 #     sleep(randint(0,1)) #2-УРОК
 #
 #
-#
-# from random import randint
-# from time import sleep
 # import requests
 # from bs4 import BeautifulSoup
+# import lxml
 # import json
-# import csv
-#
-# # # получить код сайта
-# # url = "https://health-diet.ru/table_calorie/"
-# #
+# 
 # headers = {
-#     "Accept": "*/*",
-#     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+#     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
+# 
 # }
-# # req = requests.get(url, headers=headers)
-# # src = req.text
-# # # print(src)
-# #
-# # with open("index.html", "w", encoding="utf-8") as file:
-# #     file.write(src)
-#     #2-урок
-# # получение ссылки
-# # with open("index.html", "r", encoding="utf-8") as file:
-# #     src = file.read()
-# # all_categories_dict = {}
-# # soup = BeautifulSoup(src, "lxml")
-# # all_products_href = soup.find_all(class_="mzr-tc-group-item-href")
-# #
-# # all_categories_dict = {}
-# # for item in all_products_href:
-# #     item_text = item.text
-# #     item_href = "https://health-diet.ru" + item.get("href")
-# #     print(f"{item_text}: {item_href}")
-# #
-# #     all_categories_dict[item_text] = item_href
-# #
-# # with open("all_categories_dict.json", "w", encoding="utf-8") as file:
-# #     json.dump(all_categories_dict, file, indent=4,ensure_ascii=False)
-#
+# count = 1
+# 
+# fests_urls_list = []
+# 
+# for i in range(0, 241, 24):
+#     url1 = f'https://www.skiddle.com/festivals/search/?ajaxing=1&sort=0&fest_name=&from_date=&to_date=&maxprice=500&o={i}&bannertitle=May'
+# 
+#     req = requests.get(url=url1, headers=headers)
+#     json_data = json.loads(req.text)
+#     html_response = json_data['html']
+# 
+#     with open(f"data/index_{i}.html", 'w', encoding='utf-8') as file:
+#         file.write(html_response)
+# 
+#     with open(f"data/index_{i}.html", encoding='utf-8') as file:
+#         src = file.read()
+# 
+#     soup = BeautifulSoup(src, 'lxml')
+# 
+#     cards = soup.find_all('a', class_='card-details-link')
+# 
+#     for item in cards:
+#         fest_url = 'https://www.skiddle.com' + item.get('href')
+#         fests_urls_list.append(fest_url)
+# 
+# fest_result_list =[]
+# 
+# for url in fests_urls_list:
+#     req = requests.get(url=url, headers=headers)
+# 
+#     soup = BeautifulSoup(req.text, "lxml")
+# 
+#     print("__________________________________________________")
+#     print(count)
+#     print(url)
+#     try:
+#        
+#         fest_info_block = soup.find("div", class_="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 css-1ik2gjq")
+#         fest_info_list = fest_info_block.find_all(class_="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 css-2re0kq")
+# 
+#  
+#         fest_name_block = soup.find("div", class_="MuiContainer-root MuiContainer-maxWidthFalse css-1krljt2")
+#         fest_name = fest_name_block.find("h1").text
+# 
+#  
+#         fest_data = fest_info_list[0].find(class_="MuiGrid-root MuiGrid-container css-f3i3nk").find(class_="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-11 css-twt0ol").find_all("span")
+#         fest_data[0].append(fest_data[1])
+#         # адрес ивента
+#         fest_location = fest_info_list[1].find(class_="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-11 css-twt0ol").find("span").text
+# 
+#           
+#         if len(fest_info_list) == 3:
+# 
+#             fest_price = fest_info_list[2].find(class_="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-11 css-twt0ol").find("span").text
+#         elif len(fest_info_list) < 3:
+#             fest_price = "No information"
+# 
+# 
+#         fest_result_list.append(
+#             {
+#                 "Count": count,
+#                 "Link": url,
+#                 "Fest name": fest_name,
+#                 "Fest date": fest_data[0].text,
+#                 "Fest location": fest_location,
+#                 "Fest price": fest_price,
+#             }
+#         )
+#     except AttributeError:
+#         fest_result_list.append({
+#             "Count": count,
+#             "!": "Error"
+#         })
+#     count += 1
+# 
+# with open("fest_result_list.json", "a", encoding="utf-8") as file:
+#     json.dump(fest_result_list, file, indent=4, ensure_ascii=False)
 #       #3-урок
 #
 #
 #
 #
 #
-#
-#
+#import time
 # import json
-# import time
 # import requests
 # from bs4 import BeautifulSoup
+# import lxml
 # import datetime
 # import csv
-#
+# 
 # start_time = time.time()
+# 
 # def get_data():
 #     cur_time = datetime.datetime.now().strftime("%d_%m_%Y_%H_%M")
-#
-#     with open(f"labirint_{cur_time}.csv", "w") as file:
+# 
+#     with open(f"labirint_{cur_time}.csv", "w", encoding="utf-8") as file:
 #         writer = csv.writer(file)
-#
+# 
 #         writer.writerow(
-#             {
-#                 "Назваение книги",
-#                  "Автор",
-#                  "Издательство",
-#                  "Цена со скидкой",
-#                  "Наличие на складе",
-#
-#             }
+#             (
+#                 "Название книги",
+#                 "Автор",
+#                 "Издательство",
+#                 "Цена со скидкой",
+#                 "Цена без скидки",
+#                 "Процент скидки",
+#                 "Статус наличия"
+#             )
 #         )
-#     headers ={
-#         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+# 
+#     headers = {
+#         "accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+#         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
 #     }
-#     url = "https://www.labirint.ru/genres/2308/?available=1&paperbooks=1&display=table"
-#
-#     responce = requests.get(url=url, headers=headers)
-#     soup = BeautifulSoup(responce.text, "lxml")
-#     print(f"Загрузка книг...")
-#     print("Загрузка авторов...")
-#
+# 
+#     url = "https://www.labirint.ru/genres/2308/"
+# 
+#     response = requests.get(url=url, headers=headers)
+#     soup = BeautifulSoup(response.text, "lxml")
+# 
 #     pages_count = int(soup.find("div", class_="pagination-numbers").find_all("a")[-1].text)
-#
+# 
 #     books_data = []
 #     for page in range(1, pages_count + 1):
-#     # for page in range(1, 2):
-#         url = f"https://www.labirint.ru/genres/2308/?available=1&paperbooks=1&display=table&page={page}"
-#
-#         responce = requests.get(url=url, headers=headers)
-#         soup = BeautifulSoup(responce.text, "lxml")
-#
+#         url = f"https://www.labirint.ru/genres/2308/?display=table&page={page}"
+# 
+#         response = requests.get(url=url, headers=headers)
+#         soup = BeautifulSoup(response.text, "lxml")
+# 
 #         books_items = soup.find("tbody", class_="products-table__body").find_all("tr")
+# 
 #         for bi in books_items:
 #             book_data = bi.find_all("td")
-#
+# 
 #             try:
 #                 book_title = book_data[0].find("a").text.strip()
 #             except:
-#                 book_title = "НЕТ НАЗВАНИЕ КНИГИ"
+#                 book_title = "Название не указано"
+# 
 #             try:
 #                 book_author = book_data[1].text.strip()
 #             except:
-#                 book_author = "НЕТ НАЗВАНИЕ АВТОРА"
+#                 book_author = "Автор не указан"
+# 
 #             try:
-#                 # book_publishin = book_data[2].text.strip()
-#                 book_publishin = book_data[2].find_all("a")
-#                 book_publishin = ":".join([bp.text for bp in book_publishin])
+#                 # book_publishing = book_data[2].text
+#                 book_publishing = book_data[2].find_all("a")
+#                 book_publishing = ":".join([bp.text for bp in book_publishing])
 #             except:
-#                 book_publishin = "НЕТ ИЗДАТЕЛЬСТВО"
+#                 book_publishing = "Издатель не указан"
+# 
 #             try:
-#                 book_new_price = book_data[3].find("div", class_="price").find("span").find("span").text.strip().replace(" ", ".")
+#                 book_new_price = int(book_data[3].find("div", class_="price").find("span").find("span").text.strip().replace(" ", ""))
 #             except:
-#                 book_new_price = "Нет нового прайса"
+#                 book_new_price = "Цена со скидко не указана"
+# 
 #             try:
-#                 book_old_price = book_data[3].find("span", class_="price-gray").text.strip().replace(" ", ".")
+#                 book_old_price = int(book_data[3].find("span", class_="price-gray").text.strip().replace(" ", ""))
 #             except:
-#                 book_old_price = "Скидка отсутсвует"
+#                 book_old_price = "Цена без скидки не указана"
+# 
+#             try:
+#                 book_sale = round(((book_old_price - book_new_price) / book_old_price) * 100)
+#             except:
+#                 book_sale = "Нет скидки"
+# 
 #             try:
 #                 book_status = book_data[-1].text.strip()
 #             except:
-#                 book_status = "Нет статуса"
+#                 book_status = "Статус не указан"
+# 
 #             # print(book_title)
 #             # print(book_author)
-#             # print(book_publishin)
-#             # print(book_new_price,f"СОМ")
+#             # print(book_publishing)
+#             # print(book_new_price)
 #             # print(book_old_price)
+#             # print(book_sale)
 #             # print(book_status)
 #             # print("#" * 10)
-#
+# 
 #             books_data.append(
 #                 {
-#                     "book_title": book_title,
-#                     "book_author": book_author,
-#                     "book_publishin": book_publishin,
-#                     "book_new_price": book_new_price,
-#                     "book_old_price": book_old_price,
-#                     "book_status": book_status
+#                     "Название": book_title,
+#                     "Автор": book_author,
+#                     "Издательство": book_publishing,
+#                     "Цена со скидкой": book_new_price,
+#                     "Цена без скидки": book_old_price,
+#                     "Процент скидки": book_sale,
+#                     "Статус": book_status
 #                 }
 #             )
-#             with open(f"labirint_{cur_time}.csv", "a") as file:
+# 
+#             with open(f"labirint_{cur_time}.csv", "a", encoding="utf-8") as file:
 #                 writer = csv.writer(file)
-#
+# 
 #                 writer.writerow(
-#                     {
+#                     (
 #                         book_title,
 #                         book_author,
-#                         book_publishin,
+#                         book_publishing,
 #                         book_new_price,
 #                         book_old_price,
+#                         book_sale,
 #                         book_status
-#                     }
+#                     )
 #                 )
-#
-#         print(f"оброботано {page}/{pages_count}")
+# 
+#         print(f"Обработана {page}/{pages_count}")
 #         time.sleep(1)
-#
+# 
 #     with open(f"labirint_{cur_time}.json", "w", encoding="utf-8") as file:
-#         json.dump(books_data,file, indent=4, ensure_ascii=False)
-#
-#
+#         json.dump(books_data, file, indent=4, ensure_ascii=False)
+# 
 # def main():
 #     get_data()
-#     finish_time = time.time() -start_time
-#     print(f"Затраченное на работу скрипта время: {finish_time}")
-#
-# if _name_ == '_main_':
-#     main()           # 9-урок
+#     finish_time = time.time() - start_time
+#     print(f"На работу кода ушло: {finish_time}")
+# 
+# if __name__ == '__main__':
+#     main()
+# # 9-урок
 #
 #
 #
